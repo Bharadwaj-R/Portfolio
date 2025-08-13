@@ -1,0 +1,111 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #fdfdfd;
+    color: #333;
+    line-height: 1.6;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5%;
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+nav ul {
+    display: flex;
+    gap: 1.5rem;
+}
+
+nav ul li {
+    list-style: none;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #0077ff;
+}
+
+.hero {
+    text-align: center;
+    padding: 6rem 5%;
+    background: linear-gradient(to right, #0077ff, #00bfff);
+    color: white;
+}
+
+.hero h2 {
+    font-size: 2rem;
+}
+
+.hero p {
+    margin-top: 0.5rem;
+    font-weight: 300;
+}
+
+.socials {
+    margin-top: 1rem;
+}
+
+.socials a {
+    margin: 0 0.5rem;
+    text-decoration: none;
+    background: white;
+    color: #0077ff;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+section {
+    padding: 4rem 5%;
+}
+
+h2 {
+    margin-bottom: 1rem;
+    color: #0077ff;
+}
+
+.card {
+    background: white;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+}
+
+.skills-list li {
+    background: #eaf4ff;
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+}
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    background: #0077ff;
+    color: white;
+    margin-top: 2rem;
+}
