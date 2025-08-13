@@ -15,6 +15,7 @@ body {
     line-height: 1.6;
 }
 
+/* Navigation */
 nav {
     display: flex;
     justify-content: space-between;
@@ -47,6 +48,7 @@ nav ul li a:hover {
     color: #0077ff;
 }
 
+/* Hero Section */
 .hero {
     text-align: center;
     padding: 6rem 5%;
@@ -79,6 +81,7 @@ nav ul li a:hover {
     font-weight: 500;
 }
 
+/* Section & Cards */
 .card-section {
     background: white;
     margin: 2rem 5%;
@@ -107,18 +110,28 @@ nav ul li a:hover {
     gap: 1rem;
 }
 
+.project-cards a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Skills */
 .skills-list {
     display: flex;
     flex-wrap: wrap;
     gap: 0.8rem;
+    margin-bottom: 1rem;
 }
 
-.skills-list li {
+.skills-list span {
     background: #eaf4ff;
     padding: 0.4rem 0.8rem;
     border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
 }
 
+/* Footer */
 footer {
     text-align: center;
     padding: 1rem;
