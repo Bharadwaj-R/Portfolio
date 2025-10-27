@@ -4,127 +4,829 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bharadwaj Routhu | Portfolio</title>
-    <link rel="stylesheet" href="style.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Imports the Poppins font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* CSS Custom Properties (Variables) for easy theme management */
+        :root {
+            --color-bg: #0d1117; /* Very dark blue, almost black */
+            --color-card: #161b22; /* Dark grey-blue for cards */
+            --color-border: rgba(228, 228, 228, 0.1); /* Subtle border color */
+            --color-text-primary: #e6edf3; /* Light grey for primary text */
+            --color-text-secondary: #9ca3af; /* Muted grey for secondary text */
+            --color-accent: #38bdf8; /* Vibrant light blue for accents */
+            --color-accent-hover: #7dd3fc;
+
+            /* Variables for Aurora Hover Effect */
+            --mouse-x: 50%;
+            --mouse-y: 50%;
+        }
+
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text-primary);
+            line-height: 1.7;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        /* 1. Dynamic Background Blobs */
+        .blob-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            z-index: -2;
+            filter: blur(80px); /* This creates the soft, diffused look */
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.3;
+        }
+
+        .blob-1 {
+            width: 400px;
+            height: 400px;
+            background: #2563eb; /* Blue */
+            top: -50px;
+            left: -100px;
+            animation: float 20s infinite alternate;
+        }
+
+        .blob-2 {
+            width: 300px;
+            height: 300px;
+            background: #10b981; /* Teal/Green */
+            bottom: -50px;
+            right: -50px;
+            animation: float 25s infinite alternate;
+        }
+
+        .blob-3 {
+            width: 250px;
+            height: 250px;
+            background: #a855f7; /* Purple */
+            top: 50%;
+            left: 40%;
+            animation: float 15s infinite alternate;
+        }
+
+        .blob-4 {
+            width: 200px;
+            height: 200px;
+            background: #f472b6; /* Pink */
+            top: 10%;
+            right: 10%;
+            animation: float-2 18s infinite alternate;
+        }
+
+        .blob-5 {
+            width: 150px;
+            height: 150px;
+            background: #fbbf24; /* Amber */
+            bottom: 20%;
+            left: 5%;
+            animation: float-3 22s infinite alternate;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                transform: translate(100px, 50px) scale(1.2);
+            }
+        }
+
+        @keyframes float-2 {
+            0% {
+                transform: translate(0, 0) scale(1.1);
+            }
+            100% {
+                transform: translate(-50px, -100px) scale(1);
+            }
+        }
+
+        @keyframes float-3 {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                transform: translate(50px, 100px) scale(1.1);
+            }
+        }
+
+        /* 2. Cursor Spotlight Effect */
+        #cursor-spotlight {
+            position: fixed;
+            width: 800px; /* Large area */
+            height: 800px;
+            border-radius: 50%;
+            /* A soft, radial gradient. The 0.06 opacity is key. */
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.06), transparent 60%);
+            /* Center the spotlight on the cursor */
+            transform: translate(-50%, -50%);
+            pointer-events: none; /* Allows clicking through it */
+            z-index: -1;
+            transition: transform 0.1s ease-out, background 0.1s ease-out;
+        }
+        
+        /* Main container for all content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* 3. Navigation Bar */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            /* Glassmorphism effect */
+            background: rgba(13, 17, 23, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--color-border);
+            /* Add padding back to match container */
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+            /* Correct sticky nav behavior */
+            margin-left: -1.5rem;
+            margin-right: -1.5rem;
+            width: 100vw; /* Force full width */
+        }
+        
+        /* Re-center the nav content within the sticky bar */
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        nav .logo {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        nav ul {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: var(--color-text-secondary);
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: var(--color-accent);
+        }
+        
+        /* 4. Content Grid Layout */
+        .content-grid {
+            display: grid;
+            /* A 2-column grid for flexibility */
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            padding: 2rem 0;
+        }
+        
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* 5. Bento Card Styling */
+        .bento-card {
+            background: var(--color-card);
+            border: 1px solid var(--color-border);
+            border-radius: 1rem; /* 16px */
+            padding: 1.5rem; /* 24px */
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        /* The "Aurora" Hover Effect */
+        .bento-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0;
+            /* A soft, moving radial gradient for the glow */
+            background: radial-gradient(
+                800px circle at var(--mouse-x) var(--mouse-y),
+                rgba(56, 189, 248, 0.15), /* Brighter spotlight */
+                transparent 40%
+            );
+            transition: opacity 0.4s ease;
+        }
+
+        .bento-card:hover::before {
+            opacity: 1;
+        }
+        
+        .bento-card:hover {
+            /* Lift effect */
+            transform: translateY(-5px);
+            /* Subtle shadow change */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border-color: rgba(228, 228, 228, 0.2);
+        }
+
+        /* Ensure card content is above the pseudo-element */
+        .bento-card > * {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* --- Individual Card Spans --- */
+        
+        /* Hero/About Card */
+        .card-hero {
+            grid-column: span 6; /* Full width on small screens */
+            grid-row: span 2;
+        }
+        @media (min-width: 768px) {
+            .card-hero { grid-column: span 2; }
+        }
+        
+        .card-hero h1 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--color-text-primary);
+        }
+        .card-hero h2 {
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: var(--color-accent);
+            margin-top: 0.5rem;
+        }
+        .card-hero p {
+            margin-top: 1rem;
+            color: var(--color-text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .hero-button {
+            display: inline-block;
+            margin-top: 1.5rem;
+            padding: 0.75rem 1.5rem;
+            background-color: var(--color-accent);
+            color: var(--color-bg);
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 999px; /* Pill shape */
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .hero-button:hover {
+            background-color: var(--color-accent-hover);
+            transform: translateY(-2px);
+        }
+
+        /* Socials/Contact Card */
+        .card-Contact {
+            grid-column: span 6; /* Full width on small screens */
+            grid-row: span 1;
+        }
+        @media (min-width: 768px) {
+            .card-Contact { grid-column: span 2; }
+        }
+
+        .card-Contact p {
+            color: var(--color-text-secondary);
+            font-size: 0.95rem;
+            margin-top: 0.5rem;
+        }
+
+        .Contact-links {
+            display: grid;
+            /* 2 columns, auto-fit for smaller screens */
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem; /* Increased margin */
+        }
+        .Contact-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem; /* Increased gap */
+            text-decoration: none;
+            color: var(--color-text-primary); /* Changed to primary text */
+            font-weight: 500;
+            
+            /* New styling */
+            background: rgba(0,0,0,0.2);
+            padding: 1.25rem;
+            border-radius: 0.75rem; /* 12px */
+            border: 1px solid var(--color-border);
+            transition: color 0.3s ease, border-color 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
+        }
+        .Contact-link:hover {
+            color: var(--color-accent);
+            border-color: var(--color-accent);
+            background-color: rgba(56, 189, 248, 0.05);
+            transform: translateY(-3px); /* Add lift */
+        }
+        .Contact-link svg {
+            width: 24px; /* Slightly larger icon */
+            height: 24px;
+            stroke-width: 2;
+            color: var(--color-accent); /* Make icon accent-colored by default */
+            transition: color 0.3s ease;
+            flex-shrink: 0; /* Prevent icon from shrinking */
+        }
+        
+        .Contact-link span {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.4;
+            /* IMPORTANT: Allows long text inside to wrap without stretching the card */
+            min-width: 0; 
+        }
+
+        .Contact-link span strong {
+            color: var(--color-text-primary);
+        }
+
+        .Contact-link span .Contact-detail {
+            font-size: 0.85rem;
+            color: var(--color-text-secondary);
+            /* FIX: Ensure email address wraps gracefully */
+            overflow-wrap: break-word;
+        }
+        
+        /* Education Card */
+        .card-education {
+            grid-column: span 6; /* Full width on small screens */
+            grid-row: span 3;
+        }
+        @media (min-width: 768px) {
+            .card-education { grid-column: span 1; }
+        }
+
+        .education-item {
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .education-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .education-item h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+        .education-item p {
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+            margin-top: 0.25rem;
+        }
+        
+        /* Skills Card */
+        .card-skills {
+            grid-column: span 6; /* Full width on small screens */
+            grid-row: span 2;
+        }
+        @media (min-width: 768px) {
+            .card-skills { grid-column: span 1; }
+        }
+
+        .skills-category {
+            margin-top: 1rem;
+        }
+        .skills-category h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-accent);
+            margin-bottom: 0.75rem;
+        }
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+        .skills-list span {
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--color-accent);
+            padding: 0.4rem 0.8rem;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+
+        /* Experience Card */
+        .card-experience {
+            grid-column: span 6; /* Full width on small screens */
+            grid-row: span 1;
+        }
+        @media (min-width: 500px) {
+            .card-experience { grid-column: span 3; }
+        }
+        @media (min-width: 768px) {
+            .card-experience { grid-column: span 1; }
+        }
+        
+        .card-experience h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+        .card-experience p {
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        /* Volunteer Card */
+        .card-volunteer {
+            grid-column: span 6; /* Full width on small screens */
+            grid-row: span 2;
+        }
+        @media (min-width: 500px) {
+            .card-volunteer { grid-column: span 3; }
+        }
+        @media (min-width: 768px) {
+            .card-volunteer { grid-column: span 1; }
+        }
+        
+        .volunteer-item {
+            margin-top: 1rem;
+        }
+        .volunteer-item h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+        .volunteer-item p {
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        /* Projects Card */
+        .card-projects {
+            grid-column: span 6; /* Full width */
+        }
+        @media (min-width: 768px) {
+            .card-projects {
+                grid-column: span 2; /* Full width */
+            }
+        }
+        
+        .project-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .project-card {
+            display: block; /* Makes the <a> a block element */
+            text-decoration: none;
+            background: rgba(0,0,0,0.2); /* Slightly different background */
+            border: 1px solid var(--color-border);
+            border-radius: 0.75rem; /* 12px */
+            padding: 1rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            border-color: var(--color-accent);
+        }
+        
+        .project-card h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+        .project-card p {
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+            margin-top: 0.5rem;
+        }
+        
+        /* --- General Elements --- */
+        
+        h2.section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem 1.5rem;
+            margin-top: 2rem;
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--color-border);
+        }
+    </style>
 </head>
 <body>
 
-<nav>
-    <h1 class="logo">Bharadwaj Routhu</h1>
-    <ul>
-        <li><a href="#about">About</a></li>
-        <li><a href="#education">Education</a></li>
-        <li><a href="#experience">Experience</a></li>
-        <li><a href="#projects">Projects</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#volunteer">Volunteer</a></li>
-        <li><a href="#contact">Contact</a></li>
-    </ul>
-</nav>
-
-<header class="hero" id="home" data-aos="fade-up">
-    <h2>PhD Student | Semiconductor & Neuroelectronics Researcher</h2>
-    <p>Exploring the intersection of neuroscience, electronics, and semiconductor device engineering.</p>
-    <div class="socials">
-        <a href="mailto:fromgithub@shard.anonaddy.com">Email</a>
-        <a href="https://www.linkedin.com/in/bharadwaj-routhu/">LinkedIn</a>
-        <a href="https://github.com/Bharadwaj-R">GitHub</a>
+    <!-- 1. Dynamic Backgrounds -->
+    <div class="blob-container">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+        <div class="blob blob-4"></div>
+        <div class="blob blob-5"></div>
     </div>
-</header>
+    <div id="cursor-spotlight"></div>
 
-<section id="about" class="card-section" data-aos="fade-up">
-    <h2>About Me</h2>
-    <p>
-        Hey everyone! I am Bharadwaj Routhu. I have a passion for teaching and would like to become a professor one day.
-        I am currently a PhD student, working in the Neuroelectronics Lab, in the Centre for Nano Science and Engineering at the Indian Institute of Science (IISc) Bengaluru.
-        I am interested in core technologies and fab, especially those related to semiconductor manufacturing, nano-electronics, neuroelectronics and VLSI design.
-        I am also a tech enthusiast and like to explore the new and upcoming advancements in the tech world.
-    </p>
-</section>
+    <!-- 2. Navigation -->
+    <nav>
+        <div class="nav-content">
+            <h1 class="logo">Bharadwaj Routhu</h1>
+            <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#education">Education</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#Contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
 
-<section id="education" class="card-section" data-aos="fade-up">
-    <h2>Education</h2>
-    <div class="card">
-        <h3>Indian Institute of Science, Bengaluru</h3>
-        <p>PhD in Neuroelectronics (2024–Present)</p>
-        <p>Working with Prof. Vini Gautam in Neuroelectronics Lab.</p>
-    </div>
-    <div class="card">
-        <h3>Indian Institute of Science, Bengaluru</h3>
-        <p>Master of Technology, Semiconductor Technology (2024–2026)</p>
-        <p>Upgraded directly to PhD after 1st year. Specialization in Semiconductor Device Physics, Process Integration, and Optoelectronics.</p>
-    </div>
-    <div class="card">
-        <h3>Indian Institute of Information Technology, Tiruchirappalli</h3>
-        <p>Bachelor of Technology, Electronics and Communication Engineering (2020–2024) — CGPA: 9.42/10 (Gold Medalist)</p>
-    </div>
-    <div class="card">
-        <h3>FIITJEE, Vijayawada</h3>
-        <p>Intermediate (2018–2020) — GPA: 9.73/10</p>
-    </div>
-    <div class="card">
-        <h3>Little Flower English Medium High School, Guntur</h3>
-        <p>10th Standard (2018) — Percentage: 93.6% (2nd rank in school)</p>
-    </div>
-</section>
+    <!-- 3. Main Content Container -->
+    <div class="container">
+        
+        <!-- 4. Bento Grid -->
+        <main class="content-grid">
 
-<section id="experience" class="card-section" data-aos="fade-up">
-    <h2>Experience</h2>
-    <div class="card">
-        <h3>Internet of Things Intern – Emertxe Pvt. Ltd. (Mar–May 2023)</h3>
-        <p>Developed a home automation system using PICSimLab, Arduino Uno, and Blynk IoT platform.</p>
+            <!-- Card 1: Hero / About -->
+            <section id="about" class="bento-card card-hero">
+                <h1>PhD Student | Semiconductor & Neuroelectronics Researcher</h1>
+                <h2>Exploring the intersection of neuroscience, electronics, and semiconductor device engineering.</h2>
+                <p>
+                    Hey everyone! I'm Bharadwaj Routhu. I'm currently a PhD student at the Indian Institute of Science (IISc) Bengaluru, working in the Neuroelectronics Lab. 
+                    I have a passion for teaching and aim to become a professor on day. 
+                    I am interested in Semiconductor Fabrication, core ECE technologies, Bio-Integration, Nanoelectronics and IoT Programming. 
+                    In my free time, I play video games, explore the latest tech, and do some casual reading.
+                </p>
+                <a href="#Contact" class="hero-button">Get in Touch</a>
+            </section>
+
+            <!-- Card 2: Education -->
+            <section id="education" class="bento-card card-education">
+                <h2 class="section-title">Education</h2>
+                <div class="education-item">
+                    <h3>PhD in Neuroelectronics</h3>
+                    <h5>Indian Institute of Science, Bengaluru</h5>
+                    <h5>(2024 - Present)</h5>
+                    <p>Working with Prof. Vini Gautam in Neuroelectronics Lab.</p>
+                    <p>Direct upgradation to PhD after MTech 1st year.</p>
+                </div>
+                <div class="education-item">
+                    <h3>Master of Technology, Semiconductor Technology</h3>
+                    <h5>Indian Institute of Science, Bengaluru</h5>
+                    <h5>(2024 - 2025)</h5>
+                    <p>CGPA: 8.80/10</p>                    
+                </div>
+                <div class="education-item">
+                    <h3>Bachelor of Technology, Electronics and Communication</h3>
+                    <h5>Indian Institute of Information Technology, Tiruchirappalli</h5>
+                    <h5>(2020 - 2024)</h5>
+                    <p>CGPA: 9.42/10</p>
+                    <p>Certificate of Honour - <b>Gold Medalist</b></p>
+                </div>
+                <div class="education-item">
+                    <h3>FIITJEE, Vijayawada</h3>
+                    <h5>Intermediate</h5>
+                    <h5>(2018 - 2020)</h5>
+                    <p>GPA: 9.73/10</p>
+                </div>
+                <div class="education-item">
+                    <h3>Little Flower English Medium High School, Guntur</h3>
+                    <h5>10th Standard</h5>
+                    <h5>(2018)</h5>
+                    <p>Percentage: 93.6%</p>
+                </div>
+            </section>
+
+            <!-- Card 3: Skills -->
+            <section id="skills" class="bento-card card-skills">
+                <h2 class="section-title">Skills</h2>
+                <div class="skills-category">
+                    <h3>Tools</h3>
+                    <div class="skills-list">
+                        <span>SEMulator3D</span><span>Silvaco TCAD</span><span>Altair FEKO</span><span>LTspice</span><span>Xilinx Vivado</span><span>Ansys HFSS</span><span>IoT</span>
+                    </div>
+                </div>
+                <div class="skills-category">
+                    <h3>Skills</h3>
+                    <div class="skills-list">
+                        <span>Semiconductor Fabrication</span><span>Process Integration</span><span>Device Characterization</span><span>Thermodynamics</span><span>Analog Circuits</span><span>Embedded Systems</span>
+                    </div>
+                </div>
+                <div class="skills-category">
+                    <h3>Programming</h3>
+                    <div class="skills-list">
+                        <span>C</span><span>Java</span><span>Python</span><span>Verilog</span><span>MATLAB</span>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Card 4: Experience -->
+            <section id="experience" class="bento-card card-experience">
+                <h2 class="section-title">Experience</h2>
+                <h3>Internet of Things Intern</h3>
+                <p>Emertxe Pvt. Ltd. (Mar–May 2023)</p>
+                <p>Developed a home automation system using PICSimLab, Arduino Uno, and Blynk IoT platform.</p>
+            </section>
+
+            <!-- Card 5: Projects (Full Width) -->
+            <section id="projects" class="bento-card card-projects">
+                <h2 class="section-title">Projects</h2>
+                <div class="project-cards-grid">
+                    
+                    <a href="https://www.linkedin.com/in/bharadwaj-routhu/details/projects/" class="project-card" target="_blank">
+                        <h3>Silicidation and Contact Resistance (TLM)</h3>
+                        <p>Studied contact resistance, developed Nickel Silicide process flow, & characterized using XRD/DC measurements.</p>
+                    </a>
+                    
+                    <a href="https://www.linkedin.com/in/bharadwaj-routhu/details/projects/" class="project-card" target="_blank">
+                        <h3>Imaging Nano-Diamonds (Confocal Microscope)</h3>
+                        <p>Used Olympus FV3000 to image nanoscale diamond clusters via Epifluorescence, Confocal, & Brightfield modes.</p>
+                    </a>
+                    
+                    <a href="https://www.linkedin.com/in/bharadwaj-routhu/details/projects/" class="project-card" target="_blank">
+                        <h3>Self-Balancing Inverted Pendulum</h3>
+                        <p>Designed a self-balancing pendulum using a state machine, PID control, and flex sensors for feedback.</p>
+                    </a>
+                    
+                    <a href="https://www.linkedin.com/in/bharadwaj-routhu/details/projects/" class="project-card" target="_blank">
+                        <h3>3D CFET Device Integration Flow</h3>
+                        <p>Explored process integration challenges and future solutions for 3D CFET device fabrication.</p>
+                    </a>
+                    
+                    <a href="https://www.linkedin.com/in/bharadwaj-routhu/details/projects/" class="project-card" target="_blank">
+                        <h3>X-Band Antenna Array Design</h3>
+                        <p>Designed & optimized a horn antenna array with minimized sidelobes using Altair FEKO and Ansys HFSS.</p>
+                    </a>
+                    
+                    <a href="https://www.linkedin.com/in/bharadwaj-routhu/details/projects/" class="project-card" target="_blank">
+                        <h3>Voice-Controlled Home Automation</h3>
+                        <p>Prototype using Google Assistant, Siri, NodeMCU-ESP8266, Blynk, and IFTTT.</p>
+                    </a>
+
+                </div>
+            </section>
+
+            <!-- Card 6: Volunteer -->
+            <section id="projects" class="bento-card card-projects">
+                <h2 class="section-title">Volunteer Work</h2>
+                <div class="project-cards-grid">
+                    
+                    <a class="project-card" target="_blank">
+                        <h3>Vice Sports Secretary (2022–2023)</h3>
+                        <p>Student Council of IIIT Tiruchirappalli. Led sports initiatives and managed intercollegiate tournaments.</p>
+                    </a>
+
+                    <a class="project-card" target="_blank">
+                        <h3>Coordinator – National Service Scheme (2022–2024)</h3>
+                        <p>Coordinated Swachhta Hi Sewa 3.0, Meri Maati Meri Desh, and multiple other cleanliness drives.</p>
+                    </a>
+
+                </div>
+            </section>
+
+            <!-- Card 7: Contact / Contact -->
+            <section id="Contact" class="bento-card card-Contact">
+                <h2 class="section-title">Contact</h2>
+                <p>Feel free to reach out to learn more about my reserach, collaborate with me or just to say Hello There!</p>
+                <div class="Contact-links">
+                    
+                    <a href="https://www.linkedin.com/in/bharadwaj-routhu/" class="Contact-link" target="_blank">
+                        <!-- SVG for LinkedIn -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                        <span>
+                            <strong>LinkedIn</strong>
+                            <span class="Contact-detail">in/bharadwaj-routhu</span>
+                        </span>
+                    </a>
+                    
+                    <a href="https://github.com/Bharadwaj-R" class="Contact-link" target="_blank">
+                        <!-- SVG for GitHub -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6.1 0-1.3-.5-2.4-1.3-3.2.1-.3.6-1.5-.1-3.2 0 0-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1c-.7 1.7-.2 2.9-.1 3.2-.8.8-1.3 1.9-1.3 3.2 0 4.7 2.7 5.8 5.5 6.1-.6.5-.9 1.4-.9 2.8v4.1"></path></svg>
+                        <span>
+                            <strong>GitHub</strong>
+                            <span class="Contact-detail">Bharadwaj-R</span>
+                        </span>
+                    </a>
+
+                    <a href="mailto:rbharadwaj@iisc.ac.in" class="Contact-link" target="_blank">
+                        <!-- SVG for Email -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+                        <span>
+                            <strong>Email</strong>
+                            <span class="Contact-detail">rbharadwaj@iisc.ac.in</span>
+                        </span>
+                    </a>
+
+                    <a href="tel:+917702745484" class="Contact-link">
+                         <!-- SVG for Phone -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                        <span>
+                            <strong>Phone</strong>
+                            <span class="Contact-detail">+91 7702745484</span>
+                        </span>
+                    </a>
+                </div>
+            </section>
+        </main>
     </div>
-</section>
+    
+    <!-- Footer Added -->
+    <footer>
+        <p>&copy; 2025 Bharadwaj Routhu.</p>
+    </footer>
 
-<section id="projects" class="card-section" data-aos="fade-up">
-    <h2>Projects</h2>
-    <div class="project-cards">
-        <a href="https://www.linkedin.com/in/bharadwaj-routhu/details/projects/" class="card" target="_blank" data-aos="zoom-in"><h3>Silicidation and Contact Resistance Measurement using TLM Structures</h3><p>Studied contact resistance in metal-metal vs. metal-semiconductor interfaces, developed Nickel Silicide process flow, characterized using XRD & DC measurements.</p></a>
-        <a href="https://www.linkedin.com/in/bharadwaj-routhu/details/projects/" class="card" target="_blank" data-aos="zoom-in"><h3>Imaging Nano-Diamonds using Confocal Microscope</h3><p>Used Olympus FV3000 Laser Scanning Microscope to image nanoscale diamond clusters via Epifluorescence, Confocal, and Brightfield modes.</p></a>
-        <a href="https://www.linkedin.com/in/bharadwaj-routhu/details/projects/" class="card" target="_blank" data-aos="zoom-in"><h3>Self-Balancing Inverted Pendulum</h3><p>Designed a self-balancing inverted pendulum using a state machine, PID control, and flex sensors for angular displacement feedback.</p></a>
-        <a href="https://www.linkedin.com/in/bharadwaj-routhu/details/projects/" class="card" target="_blank" data-aos="zoom-in"><h3>Integration Flow of a 3D CFET Device</h3><p>Explored process integration challenges of CFET technology, analyzing limitations and future solutions for 3D device fabrication.</p></a>
-        <a href="https://www.linkedin.com/in/bharadwaj-routhu/details/projects/" class="card" target="_blank" data-aos="zoom-in"><h3>Design of X-Band Antenna Array for Defence Applications</h3><p>Designed and optimized a horn antenna array with minimized sidelobes and high gain, using Altair FEKO and Ansys HFSS.</p></a>
-        <a href="https://www.linkedin.com/in/bharadwaj-routhu/details/projects/" class="card" target="_blank" data-aos="zoom-in"><h3>Home Automation using Blynk</h3><p>Built a home automation system using Arduino Uno, PicSimLab simulator, and the Blynk IoT platform.</p></a>
-        <a href="https://www.linkedin.com/in/bharadwaj-routhu/details/projects/" class="card" target="_blank" data-aos="zoom-in"><h3>Voice-Controlled Home Automation Prototype</h3><p>Prototype home automation system with voice control via Google Assistant & Siri using NodeMCU-ESP8266, Blynk, and IFTTT.</p></a>
-    </div>
-</section>
+    <!-- Script Block Corrected -->
+    <script>
+        // 1. Cursor Spotlight Effect and Aurora Glow Variables
+        const spotlight = document.getElementById('cursor-spotlight');
 
-<section id="skills" class="card-section" data-aos="fade-up">
-    <h2>Skills</h2>
-    <h3>Tools</h3>
-    <div class="skills-list"><span>SEMulator3D</span><span>Silvaco TCAD</span><span>Altair FEKO</span><span>LTspice</span><span>Xilinx Vivado</span><span>Ansys HFSS</span><span>Microprocessors</span><span>Microcontrollers</span><span>IoT</span></div>
-    <h3>Skills</h3>
-    <div class="skills-list"><span>Semiconductor Fabrication</span><span>Semiconductor Process Integration</span><span>Device Characterization</span><span>Thermodynamics</span><span>Analog Circuits</span><span>Embedded Systems</span></div>
-    <h3>Programming</h3>
-    <div class="skills-list"><span>C</span><span>Java</span><span>Python</span><span>Verilog</span><span>MATLAB</span></div>
-</section>
+        document.addEventListener('mousemove', (e) => {
+            // Update the spotlight position
+            spotlight.style.transform = `translate(${e.clientX}px, ${e.clientY}px) translate(-50%, -50%)`;
 
-<section id="volunteer" class="card-section" data-aos="fade-up">
-    <h2>Volunteer Work</h2>
-    <div class="card">
-        <h3>Vice Sports Secretary (2022–2023)</h3>
-        <p>Student Council of IIIT Tiruchirappalli — Led sports initiatives, coordinated events, and managed intercollegiate tournaments.</p>
-    </div>
-    <div class="card">
-        <h3>Coordinator – National Service Scheme (Jan 2022 – Jan 2024)</h3>
-        <p>Coordinator for Swachhta Hi Sewa 3.0 campaign as part of the Panchayat Union School and Govt. Health Center Cleanliness Drive.</p>
-        <p>Part of the Meri Maati Meri Desh campaign and Amrit Kalash Yatra honoring local leaders.</p>
-        <p>Conducted multiple cleanliness drives in and around IIIT Trichy under the Swachh Bharat Mission.</p>
-    </div>
-</section>
+            // Update CSS variables for the Aurora effect on cards
+            document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
+            document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`);
+        });
 
-<section id="contact" class="card-section" data-aos="fade-up">
-    <h2>Contact</h2>
-    <p>Email: <a href="mailto:bharadwajrouthu@gmail.com">bharadwajrouthu@gmail.com</a></p>
-    <p>Phone: <a href="tel:+917702745484">+91 77027 45484</a></p>
-</section>
+        // 2. Smooth Scrolling for Navigation Links and Hero Button
+        document.querySelectorAll('nav a[href^="#"], .hero-button[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
 
-<footer>
-    <p>© 2025 Bharadwaj Routhu</p>
-</footer>
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    // Calculate target position, accounting for the sticky nav
+                    const navHeight = document.querySelector('nav').offsetHeight;
+                    let targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navHeight;
+                    
+                    // Add a small buffer unless it's the first element
+                    if (targetId !== '#about') {
+                         targetPosition -= 20; // 20px buffer
+                    }
 
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-<script src="script.js"></script>
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+    </script>
 </body>
 </html>
